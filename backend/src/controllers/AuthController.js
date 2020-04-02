@@ -65,23 +65,21 @@ module.exports = {
                         message: 'Failed to authenticate token.'
                     })
             }
+
+            req.userId = decoded.id
             
             next()
         });
     },
 
     async refreshToken(req, res) {
-        const token = req.headers['x-access-token']
-
-        const decodedToken = await jwt.decode(token)
-
-        const newToken = await jwt.sign({ id: decodedToken.id }, process.env.SECRET, {
+        const token = await jwt.sign({ id: req.userId }, process.env.SECRET, {
             expiresIn: 1800
         });
 
         return res.json({
             status: true,
-            token: newToken
+            token
         })
     }
 }

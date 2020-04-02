@@ -4,7 +4,9 @@ const AuthController = require('./controllers/AuthController')
 
 const routes = Router()
 
+routes.get('/users', UserController.index)
 routes.post('/users', UserController.create)
+routes.delete('/users/:id', AuthController.verifyToken, UserController.delete)
 
 routes.post('/login', AuthController.login)
 

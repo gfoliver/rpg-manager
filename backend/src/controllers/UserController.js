@@ -3,6 +3,15 @@ const Hash = require('../utils/Hash')
 const generateUniqueUsername = require('../utils/generateUniqueUsername')
 
 module.exports = {
+    async index(req, res) {
+        const users = await connection('users').select('*')
+
+        return res.json({
+            status: true,
+            users
+        })
+    },
+
     async create(req, res) {
 
         const { name, email, password } = req.body
@@ -60,7 +69,29 @@ module.exports = {
 
     async delete(req, res) {
         const { id } = req.params
+        const { userId } = req
+        
+        if (id != userId) {
+            return res.status(401).json({
+                status: false,
+                message: "User not authorized"
+            })
+        }
 
+        const affected = await connection('users')
+            .where('id', '=', id)
+            .del()
 
+        if (! affected) {
+            return res.status(404).json({
+                status: false,
+                message: "User not found"
+            })
+        }
+
+        return res.json({
+            status: true,
+            message: "User deleted"
+        })
     }
 }
