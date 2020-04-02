@@ -1,6 +1,7 @@
 const connection = require('../database/connection')
 const Hash = require('../utils/Hash')
 const generateUniqueUsername = require('../utils/generateUniqueUsername')
+const Mail = require('../services/Mail')
 
 module.exports = {
     async index(req, res) {
@@ -53,6 +54,19 @@ module.exports = {
                 .update({
                     username
                 })
+
+            const mailSent = await Mail.sendMail(email, 'Welcome to RPG Manager', {
+                title: 'Welcome to RPG Manager',
+                text: `Greetings, ${name}. We're glad you are joining our platform!`
+            })
+
+            if (! mailSent.status) {
+                return res.status(500).json({
+                    status: false,
+                    message: "Error sending email",
+                    error: mailSent.error
+                })
+            }
 
             return res.json({
                 status: true,

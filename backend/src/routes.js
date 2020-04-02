@@ -9,11 +9,9 @@ routes.post('/users', UserController.create)
 routes.delete('/users/:id', AuthController.verifyToken, UserController.delete)
 
 routes.post('/login', AuthController.login)
+routes.post('/forgot-password', AuthController.forgotPassword)
+routes.post('/password-recovery/:token', AuthController.passwordRecovery)
 
 routes.post('/refresh-token', AuthController.verifyToken, AuthController.refreshToken)
-
-routes.get('/restrito', AuthController.verifyToken, (req, res) => {
-    res.send('Informacao ultra secreta')
-})
 
 module.exports = routes
