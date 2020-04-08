@@ -7,19 +7,38 @@ import castle from '../../assets/img/castle.png'
 import knight from '../../assets/img/knight.svg'
 import FormCard from '../../styles/FormCard'
 import SubmitButton from '../../styles/SubmitButton'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
+import { useToasts } from 'react-toast-notifications'
 
 export default function Login({ changeLogin }) {
+    const history = useHistory()
+    const { addToast } = useToasts()
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     
-    async function handleSubmit() {
-        const response = await api.post('/login', {
-            email,
-            password
-        })
+    async function handleSubmit(e) {
+        e.preventDefault();
 
-        console.log(response)
+        try {
+            const response = await api.post('/login', {
+                email,
+                password
+            })
+    
+            if (response.data.status) {
+                changeLogin(true, response.data.token)
+                history.push('/')
+            }
+        }
+        catch(error) {
+            if (error.response && error.response.data) {
+                addToast(error.response.data.message, {appearance: 'error', autoDismiss: true})
+            }
+            else {
+                addToast('Error logging in', {appearance: 'error', autoDismiss: true})
+            }
+        }
     }
 
     return (
@@ -38,11 +57,11 @@ export default function Login({ changeLogin }) {
                             />
                         </div>
                         <div className="inputGroup">
-                            <label htmlFor="login-email">Password</label>
+                            <label htmlFor="login-password">Password</label>
                             <input 
                                 type="password" 
                                 id="login-password"
-                                onChange={e => setEmail(e.target.value)} 
+                                onChange={e => setPassword(e.target.value)} 
                             />
                         </div>
                         <SubmitButton type="submit">Enter</SubmitButton>

@@ -24,6 +24,16 @@ export default styled.div`
         margin-bottom: 50px;
     }
 
+    .inputRow {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 30px;
+
+        @media only screen and (max-width: 580px) {
+            display: block;
+        }
+    }
+
     .inputGroup {
         margin-bottom: 30px;
 
