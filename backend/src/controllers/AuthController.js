@@ -1,7 +1,7 @@
 const connection = require('../database/connection')
 const Hash = require('../utils/Hash')
 const jwt = require('jsonwebtoken')
-const Mail = require('../services/Mail')
+const sendMail = require('../services/Mail')
 
 module.exports = {
     async login(req, res) {
@@ -109,7 +109,7 @@ module.exports = {
             expiresIn: 300
         })
 
-        const mailSent = await Mail.sendMail(email, 'Password Recovery', {
+        const mailSent = await sendMail(email, 'Password Recovery', {
             title: 'Password Recovery',
             text: 'Click on the link below to recover your password.',
             buttonLink: `${process.env.APP_URL}/password-recovery/${recoverToken}`,

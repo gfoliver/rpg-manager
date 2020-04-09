@@ -1,7 +1,7 @@
 const connection = require('../database/connection')
 const Hash = require('../utils/Hash')
 const generateUniqueUsername = require('../utils/generateUniqueUsername')
-const Mail = require('../services/Mail')
+const sendMail = require('../services/Mail')
 
 module.exports = {
     async index(req, res) {
@@ -55,7 +55,7 @@ module.exports = {
                     username
                 })
 
-            const mailSent = await Mail.sendMail(email, 'Welcome to RPG Manager', {
+            const mailSent = await sendMail(email, 'Welcome to RPG Manager', {
                 title: 'Welcome to RPG Manager',
                 text: `Greetings, ${name}. We're glad you are joining our platform!`
             })
@@ -74,6 +74,7 @@ module.exports = {
             })
         }
         catch(e) {
+            console.log(e);
             return res.status(500).json({
                 status: false,
                 message: "Error registering user"
