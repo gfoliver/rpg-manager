@@ -1,16 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { useToasts } from 'react-toast-notifications'
+
+import api from '../../services/api'
+
 import Header from '../partials/Header'
+
 import background from '../../assets/img/land.svg'
 import castle from '../../assets/img/castle.png'
 import knight from '../../assets/img/knight.svg'
+
 import FormCard from '../../styles/FormCard'
 import SubmitButton from '../../styles/SubmitButton'
-import { Link, useHistory } from 'react-router-dom'
 import RegisterPage from '../../styles/RegisterPage'
-import api from '../../services/api'
-import { useToasts } from 'react-toast-notifications'
 
-export default function Register({ changeLogin }) {
+export default function Register({ changeLogin, auth }) {
     const { addToast } = useToasts()
     const history = useHistory()
 
@@ -18,6 +22,11 @@ export default function Register({ changeLogin }) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordRepeat, setPasswordRepeat] = useState('')
+
+    useEffect(() => {
+        if (auth)
+            history.push('/')
+    }, [auth, history])
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -27,6 +36,8 @@ export default function Register({ changeLogin }) {
                 appearance: 'error', 
                 autoDismiss: true
             })
+
+            return
         }
 
         try {

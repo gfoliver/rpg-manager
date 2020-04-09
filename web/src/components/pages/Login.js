@@ -1,22 +1,31 @@
-import React, { useState } from 'react'
-import api from '../../services/api'
-import Header from '../partials/Header'
-import LoginPage from '../../styles/LoginPage'
-import background from '../../assets/img/land.svg'
-import castle from '../../assets/img/castle.png'
-import knight from '../../assets/img/knight.svg'
-import FormCard from '../../styles/FormCard'
-import SubmitButton from '../../styles/SubmitButton'
+import React, { useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { useToasts } from 'react-toast-notifications'
 
-export default function Login({ changeLogin }) {
+import api from '../../services/api'
+
+import Header from '../partials/Header'
+
+import background from '../../assets/img/land.svg'
+import castle from '../../assets/img/castle.png'
+import knight from '../../assets/img/knight.svg'
+
+import LoginPage from '../../styles/LoginPage'
+import FormCard from '../../styles/FormCard'
+import SubmitButton from '../../styles/SubmitButton'
+
+export default function Login({ changeLogin, auth }) {
     const history = useHistory()
     const { addToast } = useToasts()
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     
+    useEffect(() => {
+        if (auth)
+            history.push('/')
+    }, [auth, history])
+
     async function handleSubmit(e) {
         e.preventDefault();
 
