@@ -9,7 +9,7 @@
     "dotenv-safe": "^8.2.0",
     "email-templates": "^7.0.4",
     "express": "^4.17.1",
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.20.13",
     "mysql": "^2.18.1",
